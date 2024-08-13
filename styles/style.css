@@ -1,0 +1,134 @@
+@charset "UTF-8";
+:root {
+  --tier-s-color: #ff7f7f;
+  --tier-a-color: #ffbf7f;
+  --tier-b-color: #ffdf7f;
+  --tier-c-color: #ffff7f;
+  --tier-d-color: #bfff7f;
+  --tier-f-color: #7fff7f;
+  --default-tier-color: #9e9e9e;
+}
+
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+body {
+  max-width: 500px;
+  padding-inline: 32px;
+  margin: 0 auto;
+  user-select: none;
+  background: url("./../img/background TierList2.png") no-repeat center center fixed;
+  background-size: cover;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  color: #fff;
+  min-height: 100vh; /* Asegura que el contenido ocupe al menos la altura de la pantalla */
+}
+body header {
+  width: 100%;
+  overflow: hidden;
+}
+body #top-header {
+  position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+body #top-header img {
+  width: 50%;
+  height: 120px;
+  display: block;
+  position: relative; /* Asegura que la imagen del header se mantenga sobre el fondo */
+  z-index: 1; /* Eleva la imagen del header sobre la imagen de fondo */
+}
+body #top-header .header-text {
+  position: absolute;
+  z-index: 2; /* Eleva el texto sobre la imagen */
+  font-size: 2.5rem; /* Tamaño del texto */
+  font-weight: bold;
+  padding-top: 80px;
+  text-transform: uppercase;
+  background: linear-gradient(270deg, #ff8a00, #e52e71, #9a57f7, #00c3ff);
+  background-size: 800% 800%; /* Tamaño para animación suave */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientAnimation 5s ease infinite; /* Añade la animación */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Sombra para hacer el texto más legible */
+}
+body .tier {
+  margin-top: 80px;
+  border: 1px solid #444;
+  display: flex;
+  flex-direction: column;
+  background: rgba(31, 31, 31, 0.8); /* Color de fondo con transparencia */
+  backdrop-filter: blur(5px); /* Añade un desenfoque al fondo para mejor legibilidad */
+  padding: 8px;
+  border-radius: 8px;
+}
+body .tier + .tier {
+  margin-top: 0; /* Elimina el margen adicional entre los niveles */
+}
+body .level {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #444;
+  margin-bottom: 0; /* Elimina márgenes dentro del nivel */
+}
+body .label {
+  cursor: pointer;
+  background: var(--level, var(--default-tier-color));
+  color: #333;
+  font-weight: bold;
+  width: 53px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Oculta el texto que sobresalga */
+  text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es demasiado largo */
+  white-space: nowrap; /* Evita el salto de línea dentro del contenedor */
+  border-radius: 4px;
+  font-size: 1.5rem;
+}
+body .label span:focus {
+  outline: 1px solid #fff;
+}
+body #controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+button {
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Definición de la animación para el degradado */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */
