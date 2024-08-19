@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const removeTierButton = document.getElementById('remove-tier');
     const resetTierButton = document.getElementById('reset-tiers');
     const imageInput = $('#image-input');
-    const itemSection = $('#control-items');  // Corrige aquí el ID
+    const itemSection = $('#control-items');  // Corrige aquí el ID si es necesario
 
     imageInput.addEventListener('change', (event) => {
         const [file] = event.target.files;
@@ -15,14 +15,59 @@ document.addEventListener('DOMContentLoaded', () => {
         if (file) {
             const reader = new FileReader();
             reader.onload = (eventReader) => {
-                const imgElement = document.createElement('img');
-                imgElement.src = eventReader.target.result;
-                imgElement.className = 'image';
-                itemSection.appendChild(imgElement);
+                createItem(eventReader.target.result);
             };
             reader.readAsDataURL(file);
         }
     });
+
+    function createItem(src) {
+        const imgElement = document.createElement('img');
+        imgElement.draggable = true;
+        imgElement.src = src;
+        imgElement.className = 'image';
+
+        imgElement.addEventListener('dragstart', handleDragStart);
+        imgElement.addEventListener('dragend', handleDragEnd);
+
+        itemSection.appendChild(imgElement);
+    }
+
+    let draggedElement = null;
+    let sourceContainer = null;
+
+    function handleDragStart(event) {
+        draggedElement = event.target;
+        sourceContainer = draggedElement.parentNode;
+        event.dataTransfer.setData('text/plain', draggedElement.src); // Necesario para Firefox
+    }
+
+    function handleDragEnd(event) {
+        draggedElement = null;
+        sourceContainer = null;
+    }
+
+    function handleDragOver(event) {
+        console.log('drag over', event);
+        event.preventDefault(); // Necesario para permitir el drop
+        const { currentTarget } = event;
+        if (sourceContainer === currentTarget) return;
+    }
+
+    function handleDrop(event) {
+    event.preventDefault();
+    const currentTarget = event.currentTarget;
+
+    if (sourceContainer && draggedElement) {
+        sourceContainer.removeChild(draggedElement);
+        currentTarget.querySelector('.level').appendChild(draggedElement);
+        
+        // Ajustar la altura de .label según el número de imágenes
+        const label = currentTarget.querySelector('.label');
+        const numberOfRows = Math.ceil(currentTarget.querySelectorAll('.image').length / 5); // Ejemplo para 5 imágenes por fila
+        label.style.height = `${50 * numberOfRows}px`;
+        }
+    }   
 
     const tierColors = [
         'var(--tier-s-color)', 
@@ -38,34 +83,36 @@ document.addEventListener('DOMContentLoaded', () => {
     let tierCounter = 0;
 
     function createTier() {
-        if (tierCounter >= tierLabels.length) return;
+    if (tierCounter >= tierLabels.length) return;
 
-        const tierSection = document.createElement('section');
-        tierSection.className = 'tier';
+    const tierSection = document.createElement('section');
+    tierSection.className = 'tier';
 
-        const tierLevel = document.createElement('div');
-        tierLevel.className = 'level';
+    const tierLevel = document.createElement('div');
+    tierLevel.className = 'level';
 
-        const color = tierColors[tierCounter % tierColors.length];
-        tierLevel.style.setProperty('--level', color);
+    const color = tierColors[tierCounter % tierColors.length];
+    tierLevel.style.setProperty('--level', color);
 
-        const tierLabel = document.createElement('aside');
-        tierLabel.className = 'label';
+    const tierLabel = document.createElement('aside');
+    tierLabel.className = 'label';
 
-        const labelSpan = document.createElement('span');
-        labelSpan.contentEditable = true;
-        labelSpan.textContent = tierLabels[tierCounter];
+    const labelSpan = document.createElement('span');
+    labelSpan.contentEditable = true;
+    labelSpan.textContent = tierLabels[tierCounter];
 
-        tierLabel.appendChild(labelSpan);
-        tierLevel.appendChild(tierLabel);
+    tierLabel.appendChild(labelSpan);
+    tierLevel.appendChild(tierLabel);
+    tierSection.appendChild(tierLevel);
+    tierContainer.appendChild(tierSection);
 
-        tierSection.appendChild(tierLevel);
-        tierContainer.appendChild(tierSection);
+    tierSection.addEventListener('dragover', handleDragOver);
+    tierSection.addEventListener('drop', handleDrop);
 
-        labelSpan.focus();
+    labelSpan.focus();
 
-        tierCounter++;
-    }
+    tierCounter++;
+}
 
     function removeTier() {
         if (tierContainer.children.length > 0) {
@@ -79,12 +126,14 @@ document.addEventListener('DOMContentLoaded', () => {
             tierContainer.removeChild(tierContainer.firstChild);
         }
         tierCounter = 0;
-        createTier(); // Crea el primer nivel (Tier S) nuevamente
+        for (let i = 0; i < tierLabels.length; i++) {
+            createTier();
+        }
     }
 
     addTierButton.addEventListener('click', createTier);
     removeTierButton.addEventListener('click', removeTier);
     resetTierButton.addEventListener('click', resetTiers);
 
-    createTier();
+    createTier(); // Crear el primer tier al cargar la página
 });

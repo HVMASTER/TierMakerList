@@ -23,7 +23,7 @@ body {
   background-size: cover;
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   color: #fff;
-  min-height: 100vh; /* Asegura que el contenido ocupe al menos la altura de la pantalla */
+  min-height: 100vh;
 }
 body header {
   width: 100%;
@@ -41,56 +41,59 @@ body #top-header img {
   width: 50%;
   height: 120px;
   display: block;
-  position: relative; /* Asegura que la imagen del header se mantenga sobre el fondo */
-  z-index: 1; /* Eleva la imagen del header sobre la imagen de fondo */
+  position: relative;
+  z-index: 1;
 }
 body #top-header .header-text {
   position: absolute;
-  z-index: 2; /* Eleva el texto sobre la imagen */
-  font-size: 2.5rem; /* Tamaño del texto */
+  z-index: 2;
+  font-size: 2.5rem;
   font-weight: bold;
   padding-top: 80px;
   text-transform: uppercase;
   background: linear-gradient(270deg, #ff8a00, #e52e71, #9a57f7, #00c3ff);
-  background-size: 800% 800%; /* Tamaño para animación suave */
+  background-size: 800% 800%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradientAnimation 5s ease infinite; /* Añade la animación */
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Sombra para hacer el texto más legible */
+  animation: gradientAnimation 5s ease infinite;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 body .tier {
+  display: flex;
   margin-top: 80px;
   border: 1px solid #444;
-  display: flex;
   flex-direction: column;
-  background: rgba(31, 31, 31, 0.8); /* Color de fondo con transparencia */
-  backdrop-filter: blur(5px); /* Añade un desenfoque al fondo para mejor legibilidad */
+  background: rgba(31, 31, 31, 0.8);
+  backdrop-filter: blur(5px);
   padding: 8px;
   border-radius: 8px;
+  transition: all 0.3s ease; /* Transición suave al cambiar de tamaño */
 }
 body .tier + .tier {
-  margin-top: 0; /* Elimina el margen adicional entre los niveles */
+  margin-top: 0;
 }
 body .level {
   display: flex;
-  flex-direction: row;
-  border: 1px solid #444;
-  margin-bottom: 0; /* Elimina márgenes dentro del nivel */
+  align-items: center; /* Alinea las imágenes al centro vertical */
+  margin-bottom: 0;
+  flex-wrap: wrap; /* Permite que las imágenes se envuelvan en múltiples filas */
 }
 body .label {
-  cursor: pointer;
+  flex-shrink: 0;
   background: var(--level, var(--default-tier-color));
   color: #333;
   font-weight: bold;
   width: 53px;
   height: 50px;
+  margin-right: 3px;
+  margin-bottom: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* Oculta el texto que sobresalga */
-  text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es demasiado largo */
-  white-space: nowrap; /* Evita el salto de línea dentro del contenedor */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   border-radius: 4px;
   font-size: 1.5rem;
 }
@@ -137,6 +140,7 @@ body .image {
   object-fit: cover;
   background: #fff;
   cursor: grab;
+  margin-bottom: 5px;
 }
 
 button {
@@ -146,7 +150,6 @@ button {
   font-size: 1rem;
 }
 
-/* Definición de la animación para el degradado */
 @keyframes gradientAnimation {
   0% {
     background-position: 0% 50%;
